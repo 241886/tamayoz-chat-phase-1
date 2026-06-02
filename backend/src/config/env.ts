@@ -20,6 +20,18 @@ const clientUrls = (process.env.CLIENT_URL ?? "http://localhost:3000")
   .map((url) => url.trim())
   .filter(Boolean);
 
+export function isAllowedClientOrigin(origin: string | undefined) {
+  if (!origin) {
+    return true;
+  }
+
+  if (clientUrls.includes(origin)) {
+    return true;
+  }
+
+  return /^https:\/\/[a-z0-9-]+(?:-[a-z0-9-]+)*\.vercel\.app$/i.test(origin);
+}
+
 export const env = {
   databaseUrl: process.env.DATABASE_URL!,
   jwtSecret: process.env.JWT_SECRET!,

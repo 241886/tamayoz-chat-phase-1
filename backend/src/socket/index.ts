@@ -1,6 +1,6 @@
 import type { Server } from "http";
 import { Server as SocketServer } from "socket.io";
-import { env } from "../config/env.js";
+import { isAllowedClientOrigin } from "../config/env.js";
 import { prisma } from "../lib/prisma.js";
 import { assertParticipant, messageInclude } from "../modules/conversations/conversations.helpers.js";
 import { broadcastMessage } from "./notify.js";
@@ -52,7 +52,14 @@ const activeConnections = new Map<string, number>();
 export function registerSocketServer(httpServer: Server) {
   const io = new SocketServer<ClientToServerEvents, ServerToClientEvents>(httpServer, {
     cors: {
-      origin: env.clientUrls,
+      origin(origin, callback) {
+        if (isAllowedClientOrigin(origin)) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error("Not allowed by CORS."));
+      },
       credentials: true
     }
   });

@@ -1,6 +1,6 @@
 import cors from "cors";
 import express, { type ErrorRequestHandler } from "express";
-import { env } from "./config/env.js";
+import { env, isAllowedClientOrigin } from "./config/env.js";
 import { ensureUploadsDir, uploadsDir } from "./modules/messages/upload.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { conversationsRouter } from "./modules/conversations/conversations.routes.js";
@@ -13,7 +13,7 @@ export const app = express();
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || env.clientUrls.includes(origin)) {
+      if (isAllowedClientOrigin(origin)) {
         callback(null, true);
         return;
       }
