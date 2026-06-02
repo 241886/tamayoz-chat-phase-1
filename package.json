@@ -1,0 +1,29 @@
+{
+  "name": "tamayoz-chat-phase-1",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Phase 1 full-stack real-time chat platform for Tamayoz.",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev": "concurrently -n backend,frontend -c cyan,green \"npm run dev --workspace backend\" \"npm run dev --workspace frontend\"",
+    "dev:backend": "npm run dev --workspace backend",
+    "dev:frontend": "npm run dev --workspace frontend",
+    "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "test:auth": "npm run test:auth --workspace backend",
+    "test:chat": "npm run test:chat --workspace backend",
+    "test": "npm run test:auth && npm run test:chat",
+    "lint": "npm run lint --workspace frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "overrides": {
+    "postcss": "^8.5.10",
+    "next": {
+      "postcss": "^8.5.10"
+    }
+  }
+}

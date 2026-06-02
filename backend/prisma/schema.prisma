@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String                    @id @default(uuid())
+  name         String
+  email        String                    @unique
+  passwordHash String
+  avatarUrl    String?
+  status       String                    @default("OFFLINE")
+  lastSeenAt   DateTime?
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  messages     Message[]
+  attachments  Attachment[]
+  conversations ConversationParticipant[]
+  createdGroups ChatGroup[]       @relation("GroupCreator")
+  groupMemberships GroupMember[]
+  blockedUsers UserBlock[]         @relation("Blocker")
+  blockedBy    UserBlock[]         @relation("Blocked")
+
+  @@index([email])
+  @@index([status])
+}
+
+model Conversation {
+  id           String                    @id @default(uuid())
+  directKey    String                    @unique
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  participants ConversationParticipant[]
+  messages     Message[]
+  attachments  Attachment[]
+  group        ChatGroup?
+}
+
+model ChatGroup {
+  id             String        @id @default(uuid())
+  conversationId String        @unique
+  name           String
+  description    String?
+  avatarUrl      String?
+  creatorId      String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  archivedAt     DateTime?
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  creator        User          @relation("GroupCreator", fields: [creatorId], references: [id], onDelete: Cascade)
+  members        GroupMember[]
+  messages       Message[]
+  attachments    Attachment[]
+
+  @@index([creatorId])
+  @@index([conversationId])
+  @@map("ChatGroup")
+}
+
+model GroupMember {
+  id        String    @id @default(uuid())
+  groupId   String
+  userId    String
+  role      String    @default("MEMBER")
+  mutedAt   DateTime?
+  joinedAt  DateTime  @default(now())
+  group     ChatGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([groupId, userId])
+  @@index([userId])
+  @@index([groupId])
+}
+
+model UserBlock {
+  id        String   @id @default(uuid())
+  blockerId String
+  blockedId String
+  createdAt DateTime @default(now())
+  blocker   User     @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User     @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@unique([blockerId, blockedId])
+  @@index([blockedId])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(uuid())
+  conversationId String
+  userId         String
+  joinedAt       DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(uuid())
+  conversationId String
+  groupId        String?
+  senderId       String
+  body           String       @default("")
+  isEdited       Boolean      @default(false)
+  editedAt       DateTime?
+  isDeleted      Boolean      @default(false)
+  deletedAt      DateTime?
+  readAt         DateTime?
+  createdAt      DateTime     @default(now())
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  group          ChatGroup?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  attachments    Attachment[]
+
+  @@index([conversationId, createdAt])
+  @@index([groupId, createdAt])
+  @@index([senderId])
+  @@index([createdAt])
+}
+
+model Attachment {
+  id             String       @id @default(uuid())
+  messageId      String
+  conversationId String
+  groupId        String?
+  senderId       String
+  originalName   String
+  storedName     String       @unique
+  url            String
+  mimeType       String
+  size           Int
+  createdAt      DateTime     @default(now())
+  message        Message      @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  group          ChatGroup?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([messageId])
+  @@index([conversationId, createdAt])
+  @@index([groupId, createdAt])
+  @@index([senderId])
+}

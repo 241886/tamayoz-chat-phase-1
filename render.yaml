@@ -1,0 +1,25 @@
+services:
+  - type: web
+    name: tamayoz-chat-api
+    runtime: node
+    rootDir: backend
+    region: singapore
+    plan: starter
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npm run start:render
+    healthCheckPath: /health
+    disk:
+      name: tamayoz-chat-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: file:/var/data/tamayoz.db
+      - key: UPLOAD_DIR
+        value: /var/data/uploads
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: CLIENT_URL
+        sync: false
