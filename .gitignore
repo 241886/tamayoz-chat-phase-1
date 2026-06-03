@@ -7,9 +7,6 @@ coverage
 *.zip
 .tools
 frontend/out
-android/.gradle
-android/app/build
-android/build
 ios/App/build
 ios/App/DerivedData
 ios/App/xcuserdata

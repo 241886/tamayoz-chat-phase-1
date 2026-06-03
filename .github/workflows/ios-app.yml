@@ -1,0 +1,76 @@
+name: Build iOS App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-ios:
+    name: Build iOS Simulator App
+    runs-on: macos-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      DATABASE_URL: file:./dev.db
+      JWT_SECRET: github-actions-ios-build-secret
+      JWT_EXPIRES_IN: 7d
+      PORT: 4000
+      CLIENT_URL: http://localhost:3000
+      UPLOAD_DIR: ./uploads
+      NEXT_PUBLIC_API_URL: https://tamayoz-chat-api.onrender.com
+      NEXT_PUBLIC_SOCKET_URL: https://tamayoz-chat-api.onrender.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts 2>&1 | tee -a ci-ios-log.txt
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate --workspace backend 2>&1 | tee -a ci-ios-log.txt
+
+      - name: Build and sync iOS app
+        run: |
+          set -o pipefail
+          npm run mobile:build 2>&1 | tee -a ci-ios-log.txt
+
+      - name: Build iOS simulator app
+        working-directory: ios/App
+        run: |
+          set -o pipefail
+          xcodebuild \
+            -project App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO \
+            build 2>&1 | tee -a ../../ci-ios-log.txt
+
+      - name: Package iOS simulator app
+        run: |
+          mkdir -p artifacts
+          APP_PATH=$(find ios/App/build -name "App.app" -type d | head -n 1)
+          ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" artifacts/ALMAJD-ios-simulator-app.zip
+
+      - name: Upload iOS CI log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-ios-ci-log
+          path: ci-ios-log.txt
+
+      - name: Upload iOS simulator app
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-ios-simulator-app
+          path: artifacts/ALMAJD-ios-simulator-app.zip

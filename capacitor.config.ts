@@ -4,10 +4,7 @@ const config: CapacitorConfig = {
   appId: "com.almajd.chat",
   appName: "ALMAJD",
   webDir: "frontend/out",
-  bundledWebRuntime: false,
-  server: {
-    androidScheme: "https"
-  }
+  bundledWebRuntime: false
 };
 
 export default config;

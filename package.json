@@ -13,12 +13,9 @@
     "dev:frontend": "npm run dev --workspace frontend",
     "build": "npm run build --workspace backend && npm run build --workspace frontend",
     "mobile:web": "npm run build:mobile --workspace frontend",
-    "mobile:sync": "npm run mobile:web && npx cap sync android && npx cap sync ios",
-    "mobile:sync:android": "npm run mobile:web && npx cap sync android",
+    "mobile:sync": "npm run mobile:web && npx cap sync ios",
     "mobile:sync:ios": "npm run mobile:web && npx cap sync ios",
-    "mobile:build": "npm run mobile:sync",
-    "mobile:open:android": "npx cap open android",
-    "mobile:run:android": "npx cap run android",
+    "mobile:build": "npm run mobile:sync:ios",
     "mobile:open:ios": "npx cap open ios",
     "mobile:run:ios": "npx cap run ios",
     "test:auth": "npm run test:auth --workspace backend",
@@ -37,7 +34,6 @@
     }
   },
   "dependencies": {
-    "@capacitor/android": "^8.4.0",
     "@capacitor/core": "^8.4.0",
     "@capacitor/ios": "^8.4.0"
   }
