@@ -42,25 +42,37 @@ jobs:
 
       - name: Install Android SDK packages
         run: |
+          set -o pipefail
           yes | sdkmanager --licenses
-          sdkmanager "platforms;android-36" "build-tools;36.0.0"
+          sdkmanager "platforms;android-36" "build-tools;36.0.0" 2>&1 | tee -a ci-log.txt
 
       - name: Install dependencies
-        run: npm ci --ignore-scripts
+        run: npm ci --ignore-scripts 2>&1 | tee -a ci-log.txt
 
       - name: Generate Prisma client
-        run: npm run prisma:generate --workspace backend
+        run: npm run prisma:generate --workspace backend 2>&1 | tee -a ci-log.txt
 
       - name: Build and sync mobile app
-        run: npm run mobile:build
+        run: |
+          set -o pipefail
+          npm run mobile:build 2>&1 | tee -a ci-log.txt
 
       - name: Build debug APK
         working-directory: android
         run: |
+          set -o pipefail
           chmod +x ./gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug --stacktrace 2>&1 | tee -a ../ci-log.txt
+
+      - name: Upload CI log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-android-ci-log
+          path: ci-log.txt
 
       - name: Upload APK
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: ALMAJD-debug-apk
