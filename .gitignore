@@ -10,6 +10,10 @@ frontend/out
 android/.gradle
 android/app/build
 android/build
+ios/App/build
+ios/App/DerivedData
+ios/App/xcuserdata
+ios/App/*.xcworkspace/xcuserdata
 backend/prisma/dev.db
 backend/prisma/dev.db-journal
 backend/uploads

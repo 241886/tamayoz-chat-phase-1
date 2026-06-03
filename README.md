@@ -55,19 +55,32 @@ npm.cmd run start --workspace frontend
 
 Then open `http://localhost:3000/chat` in Chrome or Edge and use the browser install button, or the in-app `Install ALMAJD` button when it appears.
 
-## Native Mobile App
+## Native Mobile Apps
 
-ALMAJD also includes a Capacitor Android wrapper. The native app uses the static exported Next.js frontend and connects to the deployed Render backend by default:
+ALMAJD includes Capacitor wrappers for Android and iOS. The native apps use the static exported Next.js frontend and connect to the deployed Render backend by default:
 
 - API: `https://tamayoz-chat-api.onrender.com`
 - Socket.IO: `https://tamayoz-chat-api.onrender.com`
 - Android app id: `com.almajd.chat`
-- Android app name: `ALMAJD`
+- iOS bundle id: `com.almajd.chat`
+- App name: `ALMAJD`
 
-Build and sync the Android project:
+Build and sync both native projects:
 
 ```cmd
 npm.cmd run mobile:build
+```
+
+Build and sync only Android:
+
+```cmd
+npm.cmd run mobile:sync:android
+```
+
+Build and sync only iOS:
+
+```cmd
+npm.cmd run mobile:sync:ios
 ```
 
 Open the project in Android Studio:
@@ -81,6 +94,20 @@ Run on an emulator or connected Android phone:
 ```cmd
 npm.cmd run mobile:run:android
 ```
+
+Open the iOS project in Xcode:
+
+```cmd
+npm.cmd run mobile:open:ios
+```
+
+Run on an iOS simulator or device:
+
+```cmd
+npm.cmd run mobile:run:ios
+```
+
+Note: iOS building/running requires macOS with Xcode. Windows can generate and sync the iOS project, but it cannot compile the final iOS app locally.
 
 Build a debug APK from the Android folder:
 
@@ -97,13 +124,16 @@ android\app\build\outputs\apk\debug\app-debug.apk
 
 Android builds require Android Studio and a configured Java JDK. If `gradlew.bat assembleDebug` says `JAVA_HOME is not set`, install Android Studio or JDK 17+, then set `JAVA_HOME` to the JDK path and reopen the terminal.
 
-You can also build the APK from GitHub without installing Java locally:
+You can also build mobile artifacts from GitHub:
 
 1. Push the project to GitHub.
 2. Open the repository on GitHub.
 3. Go to `Actions`.
-4. Run `Build Android APK`.
-5. Download the `ALMAJD-debug-apk` artifact.
+4. Run `Build Mobile Apps`.
+5. Download `ALMAJD-debug-apk` for Android.
+6. Download `ALMAJD-ios-simulator-app` for iOS simulator testing.
+
+For a real iPhone/TestFlight/App Store build, configure Apple Developer code signing in Xcode or GitHub Actions.
 
 ## Setup
 
