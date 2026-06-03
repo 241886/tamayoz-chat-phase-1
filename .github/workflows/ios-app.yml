@@ -56,9 +56,25 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build 2>&1 | tee -a ../../ci-ios-log.txt
 
+      - name: Install and launch in iOS Simulator
+        run: |
+          set -o pipefail
+          mkdir -p artifacts
+          APP_PATH=$(find ios/App/build -name "App.app" -type d | head -n 1)
+          DEVICE_TYPE=$(xcrun simctl list devicetypes | awk -F'[()]' '/iPhone/ {print $2; exit}')
+          RUNTIME=$(xcrun simctl list runtimes available | awk -F' - ' '/iOS/ {print $NF}' | tail -n 1)
+          SIM_ID=$(xcrun simctl create "ALMAJD CI" "$DEVICE_TYPE" "$RUNTIME")
+          xcrun simctl boot "$SIM_ID" || true
+          xcrun simctl bootstatus "$SIM_ID" -b
+          xcrun simctl install "$SIM_ID" "$APP_PATH"
+          xcrun simctl launch "$SIM_ID" com.almajd.chat
+          sleep 8
+          xcrun simctl io "$SIM_ID" screenshot artifacts/ALMAJD-ios-simulator-screenshot.png
+          xcrun simctl shutdown "$SIM_ID" || true
+          echo "Launched ALMAJD on simulator $SIM_ID" | tee -a ci-ios-log.txt
+
       - name: Package iOS simulator app
         run: |
-          mkdir -p artifacts
           APP_PATH=$(find ios/App/build -name "App.app" -type d | head -n 1)
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" artifacts/ALMAJD-ios-simulator-app.zip
 
@@ -74,3 +90,9 @@ jobs:
         with:
           name: ALMAJD-ios-simulator-app
           path: artifacts/ALMAJD-ios-simulator-app.zip
+
+      - name: Upload iOS simulator screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-ios-simulator-screenshot
+          path: artifacts/ALMAJD-ios-simulator-screenshot.png
