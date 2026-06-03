@@ -1,10 +1,10 @@
 services:
   postgres:
     image: postgres:16
-    container_name: tamayoz-chat-postgres
+    container_name: nexus-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: tamayoz_chat_phase_1
+      POSTGRES_DB: nexus
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:

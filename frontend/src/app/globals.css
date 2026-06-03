@@ -19,10 +19,11 @@ body {
   margin: 0;
   background: #f5f7f8;
   color: #17202a;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 .dark body {
-  background: #0f1720;
+  background: #080c14;
   color: #f8fafc;
 }
 

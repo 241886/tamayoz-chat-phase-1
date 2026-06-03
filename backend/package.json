@@ -1,5 +1,5 @@
 {
-  "name": "@tamayoz-chat/backend",
+  "name": "@nexus/backend",
   "private": true,
   "version": "1.0.0",
   "type": "module",

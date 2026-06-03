@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: tamayoz-chat-api
+    name: nexus-api
     runtime: node
     rootDir: backend
     region: singapore
@@ -9,12 +9,12 @@ services:
     startCommand: npm run start:render
     healthCheckPath: /health
     disk:
-      name: tamayoz-chat-data
+      name: nexus-data
       mountPath: /var/data
       sizeGB: 1
     envVars:
       - key: DATABASE_URL
-        value: file:/var/data/tamayoz.db
+        value: file:/var/data/nexus.db
       - key: UPLOAD_DIR
         value: /var/data/uploads
       - key: JWT_SECRET

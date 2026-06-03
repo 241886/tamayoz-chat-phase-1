@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import { BellOff, Pencil, Search, Users } from "lucide-react";
+import { NexusLogo } from "@/components/brand/NexusLogo";
 import { Avatar } from "@/components/chat/Avatar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { formatTime } from "@/lib/api";
@@ -37,7 +38,10 @@ export function ConversationList({
   onChangeName
 }: ConversationListProps) {
   return (
-    <aside className="flex h-full min-h-0 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
+    <aside className="flex h-full min-h-0 flex-col border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-nexus-panel">
+      <div className="border-b border-slate-200 px-4 py-4 dark:border-slate-800">
+        <NexusLogo />
+      </div>
       <header className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3 dark:border-slate-800">
         <div className="flex min-w-0 items-center gap-3">
           <Avatar user={currentUser} />

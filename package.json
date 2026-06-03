@@ -1,8 +1,8 @@
 {
-  "name": "tamayoz-chat-phase-1",
+  "name": "nexus",
   "private": true,
   "version": "1.0.0",
-  "description": "Phase 1 full-stack real-time chat platform for Tamayoz.",
+  "description": "Nexus: Connect. Collaborate. Create.",
   "workspaces": [
     "backend",
     "frontend"

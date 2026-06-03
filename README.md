@@ -1,6 +1,8 @@
-# Tamayoz Chat Phase 1
+# Nexus
 
-A complete Phase 1 full-stack real-time chat system with JWT authentication, private one-to-one conversations, Socket.IO messaging, SQLite local persistence, Prisma ORM, a responsive Next.js interface, and dark mode.
+Connect. Collaborate. Create.
+
+Nexus is a modern full-stack real-time workspace chat system with guest access, private and group conversations, Socket.IO messaging, file sharing, SQLite local persistence, Prisma ORM, a responsive Next.js interface, PWA metadata, and a dark-mode-first professional UI.
 
 ## Tech Stack
 
@@ -12,7 +14,7 @@ A complete Phase 1 full-stack real-time chat system with JWT authentication, pri
 ## Project Structure
 
 ```txt
-tamayoz-chat-phase-1/
+nexus/
   backend/
     prisma/schema.prisma
     src/
@@ -205,7 +207,7 @@ Important storage note: the current app uses SQLite and local uploads. Render Fr
 From the project root:
 
 ```cmd
-cd /d C:\Users\almaj\Documents\Codex\2026-05-31\create-phase-1-of-my-platform\outputs\tamayoz-chat-phase-1
+cd /d C:\path\to\nexus
 ```
 
 Create a GitHub repository, then push this folder to it. Render and Vercel both deploy most easily from GitHub.
@@ -218,7 +220,7 @@ Option A, recommended for this project:
 2. Click New > Blueprint.
 3. Select the GitHub repository.
 4. Render will read `render.yaml`.
-5. When Render asks for `CLIENT_URL`, enter your final Vercel URL after creating the Vercel project. If you do not know it yet, enter a temporary URL such as `https://tamayoz-chat.vercel.app`, then update it later.
+5. When Render asks for `CLIENT_URL`, enter your final Vercel URL after creating the Vercel project. If you do not know it yet, enter a temporary URL such as `https://nexus-chat.vercel.app`, then update it later.
 6. Create the service.
 
 The included `render.yaml` config uses:
@@ -237,7 +239,7 @@ Disk Mount Path: /var/data
 Render backend environment variables:
 
 ```env
-DATABASE_URL=file:/var/data/tamayoz.db
+DATABASE_URL=file:/var/data/nexus.db
 UPLOAD_DIR=/var/data/uploads
 JWT_SECRET=<generated-by-render-or-long-random-secret>
 JWT_EXPIRES_IN=7d
@@ -247,7 +249,7 @@ CLIENT_URL=https://your-vercel-project.vercel.app
 If you deploy manually instead of Blueprint, create a Render Web Service with:
 
 ```txt
-Name: tamayoz-chat-api
+Name: nexus-api
 Root Directory: backend
 Runtime: Node
 Build Command: npm install --include=dev && npm run build
@@ -265,13 +267,13 @@ Size: 1 GB
 After the backend deploys, copy the Render URL. It will look like:
 
 ```txt
-https://tamayoz-chat-api.onrender.com
+https://nexus-api.onrender.com
 ```
 
 Backend health check:
 
 ```txt
-https://tamayoz-chat-api.onrender.com/health
+https://nexus-api.onrender.com/health
 ```
 
 ### 3. Deploy the frontend on Vercel
@@ -348,7 +350,7 @@ This project deploys cleanly as two Azure App Services:
 For a first demo deployment, SQLite can run on Azure App Service persistent storage. Use:
 
 ```txt
-DATABASE_URL=file:/home/site/data/tamayoz.db
+DATABASE_URL=file:/home/site/data/nexus.db
 UPLOAD_DIR=/home/site/uploads
 ```
 
@@ -365,11 +367,11 @@ az login
 Change the app names because Azure App Service names must be globally unique.
 
 ```cmd
-set RG=tamayoz-chat-rg
+set RG=nexus-rg
 set LOCATION=uaenorth
-set PLAN=tamayoz-chat-plan
-set API_APP=tamayoz-chat-api-yourname
-set WEB_APP=tamayoz-chat-web-yourname
+set PLAN=nexus-plan
+set API_APP=nexus-api-yourname
+set WEB_APP=nexus-web-yourname
 
 az group create --name %RG% --location %LOCATION%
 az appservice plan create --name %PLAN% --resource-group %RG% --location %LOCATION% --sku F1 --is-linux
@@ -380,7 +382,7 @@ az webapp create --resource-group %RG% --plan %PLAN% --name %WEB_APP% --runtime 
 ### 3. Configure backend
 
 ```cmd
-az webapp config appsettings set --resource-group %RG% --name %API_APP% --settings DATABASE_URL="file:/home/site/data/tamayoz.db" JWT_SECRET="change-this-to-a-long-random-secret" JWT_EXPIRES_IN="7d" CLIENT_URL="https://%WEB_APP%.azurewebsites.net" UPLOAD_DIR="/home/site/uploads" SCM_DO_BUILD_DURING_DEPLOYMENT="true" WEBSITES_ENABLE_APP_SERVICE_STORAGE="true" WEBSITE_NODE_DEFAULT_VERSION="~22"
+az webapp config appsettings set --resource-group %RG% --name %API_APP% --settings DATABASE_URL="file:/home/site/data/nexus.db" JWT_SECRET="change-this-to-a-long-random-secret" JWT_EXPIRES_IN="7d" CLIENT_URL="https://%WEB_APP%.azurewebsites.net" UPLOAD_DIR="/home/site/uploads" SCM_DO_BUILD_DURING_DEPLOYMENT="true" WEBSITES_ENABLE_APP_SERVICE_STORAGE="true" WEBSITE_NODE_DEFAULT_VERSION="~22"
 az webapp config set --resource-group %RG% --name %API_APP% --startup-file "npm run start:azure" --web-sockets-enabled true
 ```
 
@@ -412,13 +414,13 @@ az webapp deploy --resource-group %RG% --name %WEB_APP% --src-path frontend.zip
 ### 7. Open the app
 
 ```txt
-https://tamayoz-chat-web-yourname.azurewebsites.net
+https://nexus-web-yourname.azurewebsites.net
 ```
 
 Backend health check:
 
 ```txt
-https://tamayoz-chat-api-yourname.azurewebsites.net/health
+https://nexus-api-yourname.azurewebsites.net/health
 ```
 
 ## Database Schema
@@ -490,7 +492,7 @@ Server to client:
 - `typing:update`
 - `conversation:upsert`
 
-## Current Phase 1 Features
+## Current Nexus Features
 
 - Register, login, logout
 - JWT authentication
@@ -506,7 +508,7 @@ Server to client:
 - Read/unread status
 - Typing indicator
 - Conversation list
-- Responsive WhatsApp/Telegram-style layout
+- Responsive premium workspace layout
 - Dark mode toggle
 
 ## Architecture Notes

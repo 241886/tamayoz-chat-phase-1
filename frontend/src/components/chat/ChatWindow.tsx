@@ -18,6 +18,7 @@ import {
   X
 } from "lucide-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { NexusLogo } from "@/components/brand/NexusLogo";
 import { Avatar } from "@/components/chat/Avatar";
 import { absoluteFileUrl, formatBytes, formatLastSeen, formatTime } from "@/lib/api";
 import type { Attachment, Conversation, Group, Message, User } from "@/types/chat";
@@ -109,13 +110,11 @@ export function ChatWindow({
 
   if (!conversation && !group) {
     return (
-      <section className="hidden h-full flex-col items-center justify-center bg-[#e8f0f2] px-6 text-center dark:bg-slate-900 md:flex">
-        <div className="grid h-16 w-16 place-items-center rounded-2xl bg-white text-brand-700 shadow-soft dark:bg-slate-950 dark:text-brand-100">
-          <Send size={28} />
-        </div>
-        <h2 className="mt-5 text-xl font-semibold">Select a conversation</h2>
-        <p className="mt-2 max-w-sm text-sm text-slate-500 dark:text-slate-400">
-          Your private messages will appear here.
+      <section className="hidden h-full flex-col items-center justify-center bg-mist px-6 text-center dark:bg-nexus-dark md:flex">
+        <NexusLogo size="lg" />
+        <h2 className="mt-6 text-2xl font-semibold">A focused workspace for every conversation</h2>
+        <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500 dark:text-slate-400">
+          Select a chat or create a group to connect, collaborate, and create with your team.
         </p>
       </section>
     );
@@ -325,7 +324,7 @@ export function ChatWindow({
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-[#e8f0f2] dark:bg-slate-900">
+    <section className="flex h-full min-h-0 flex-col bg-mist dark:bg-nexus-dark">
       <header className="flex h-[65px] items-center gap-3 border-b border-slate-200 bg-white px-3 dark:border-slate-800 dark:bg-slate-950 sm:px-4">
         <button
           type="button"

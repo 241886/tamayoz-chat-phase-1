@@ -7,7 +7,7 @@ export function createSocket(token: string): Socket {
     return io(SOCKET_URL, {
       auth: {
         guestId: token.slice("guest:".length),
-        guestName: window.localStorage.getItem("tamayoz_chat_guest_name") ?? ""
+        guestName: window.localStorage.getItem("nexus_guest_name") ?? ""
       },
       transports: ["websocket"]
     });

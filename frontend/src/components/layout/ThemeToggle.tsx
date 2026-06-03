@@ -7,7 +7,7 @@ export function ThemeToggle() {
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    const saved = window.localStorage.getItem("tamayoz_theme");
+    const saved = window.localStorage.getItem("nexus_theme");
     const shouldUseDark = saved ? saved === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
     setDark(shouldUseDark);
     document.documentElement.classList.toggle("dark", shouldUseDark);
@@ -16,7 +16,7 @@ export function ThemeToggle() {
   function toggle() {
     const next = !dark;
     setDark(next);
-    window.localStorage.setItem("tamayoz_theme", next ? "dark" : "light");
+    window.localStorage.setItem("nexus_theme", next ? "dark" : "light");
     document.documentElement.classList.toggle("dark", next);
   }
 

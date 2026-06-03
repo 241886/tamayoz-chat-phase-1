@@ -10,7 +10,7 @@ function guestHeaders(token?: string | null): Record<string, string> {
   }
 
   const guestId = token.slice("guest:".length);
-  const guestName = window.localStorage.getItem("tamayoz_chat_guest_name") ?? "";
+  const guestName = window.localStorage.getItem("nexus_guest_name") ?? "";
 
   return {
     "x-guest-id": guestId,

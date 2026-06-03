@@ -509,7 +509,7 @@ export function ChatShell() {
       xhr.open("POST", `${API_URL}${path}`);
       if (token.startsWith("guest:")) {
         xhr.setRequestHeader("x-guest-id", token.slice("guest:".length));
-        xhr.setRequestHeader("x-guest-name", window.localStorage.getItem("tamayoz_chat_guest_name") ?? "");
+        xhr.setRequestHeader("x-guest-name", window.localStorage.getItem("nexus_guest_name") ?? "");
       } else {
         xhr.setRequestHeader("Authorization", `Bearer ${token}`);
       }
@@ -866,15 +866,15 @@ export function ChatShell() {
 
   if (!isReady || !user || !token) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-mist dark:bg-slate-950">
+      <main className="flex min-h-screen items-center justify-center bg-nexus-dark">
         <div className="h-10 w-10 animate-spin rounded-full border-4 border-brand-500 border-t-transparent" />
       </main>
     );
   }
 
   return (
-    <main className="h-screen overflow-hidden bg-mist text-ink dark:bg-slate-950 dark:text-white">
-      <div className="mx-auto grid h-full max-w-[1500px] grid-cols-1 bg-white shadow-soft dark:bg-slate-950 md:grid-cols-[380px_1fr]">
+    <main className="h-screen overflow-hidden bg-mist text-ink dark:bg-nexus-dark dark:text-white">
+      <div className="mx-auto grid h-full max-w-[1500px] grid-cols-1 bg-white shadow-nexus dark:bg-nexus-panel md:grid-cols-[380px_1fr]">
         <div className={clsx("relative min-h-0", activeId || activeGroupId ? "hidden md:block" : "block")}>
           <ConversationList
             currentUser={user}

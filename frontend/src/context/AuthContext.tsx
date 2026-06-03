@@ -22,9 +22,9 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
-const TOKEN_KEY = "tamayoz_chat_token";
-const GUEST_ID_KEY = "tamayoz_chat_guest_id";
-const GUEST_NAME_KEY = "tamayoz_chat_guest_name";
+const TOKEN_KEY = "nexus_token";
+const GUEST_ID_KEY = "nexus_guest_id";
+const GUEST_NAME_KEY = "nexus_guest_name";
 
 function randomGuestName() {
   return `Guest ${Math.floor(1000 + Math.random() * 9000)}`;
