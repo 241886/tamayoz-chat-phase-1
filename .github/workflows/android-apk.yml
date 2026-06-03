@@ -59,11 +59,13 @@ jobs:
           npm run mobile:sync:android 2>&1 | tee -a ci-log.txt
 
       - name: Build debug APK
+        id: android_build
+        continue-on-error: true
         working-directory: android
         run: |
           set -o pipefail
           chmod +x ./gradlew
-          ./gradlew assembleDebug --stacktrace 2>&1 | tee -a ../ci-log.txt
+          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee -a ../ci-log.txt
 
       - name: Upload CI log
         if: always()
@@ -71,6 +73,25 @@ jobs:
         with:
           name: ALMAJD-android-ci-log
           path: ci-log.txt
+
+      - name: Show Android build failure
+        if: steps.android_build.outcome == 'failure'
+        run: |
+          echo "### Android Gradle failure" >> "$GITHUB_STEP_SUMMARY"
+          echo '```txt' >> "$GITHUB_STEP_SUMMARY"
+          tail -120 ci-log.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo 'ANDROID_ERROR<<EOF'
+            tail -40 ci-log.txt
+            echo EOF
+          } >> "$GITHUB_ENV"
+
+      - name: Fail Android job after diagnostics
+        if: steps.android_build.outcome == 'failure'
+        run: |
+          echo "::error title=Android Gradle failure::$ANDROID_ERROR"
+          exit 1
 
       - name: Upload APK
         if: success()
