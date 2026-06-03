@@ -42,23 +42,33 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Install Android SDK packages
+        id: sdk_packages
+        continue-on-error: true
         run: |
           set -o pipefail
           yes | sdkmanager --licenses 2>&1 | tee -a ci-android-log.txt || true
           sdkmanager "platforms;android-35" "build-tools;35.0.0" 2>&1 | tee -a ci-android-log.txt
 
       - name: Install dependencies
+        id: npm_ci
+        continue-on-error: true
         run: npm ci --ignore-scripts 2>&1 | tee -a ci-android-log.txt
 
       - name: Generate Prisma client
+        id: prisma_generate
+        continue-on-error: true
         run: npm run prisma:generate --workspace backend 2>&1 | tee -a ci-android-log.txt
 
       - name: Build and sync Android app
+        id: capacitor_sync
+        continue-on-error: true
         run: |
           set -o pipefail
           npm run mobile:build:android 2>&1 | tee -a ci-android-log.txt
 
       - name: Build debug APK
+        id: gradle_build
+        continue-on-error: true
         run: |
           set -o pipefail
           chmod +x android/gradlew
@@ -66,6 +76,7 @@ jobs:
           ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee -a ../ci-android-log.txt
 
       - name: Run Android emulator smoke test
+        if: steps.sdk_packages.outcome == 'success' && steps.npm_ci.outcome == 'success' && steps.prisma_generate.outcome == 'success' && steps.capacitor_sync.outcome == 'success' && steps.gradle_build.outcome == 'success'
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 35
@@ -87,13 +98,41 @@ jobs:
           path: ci-android-log.txt
 
       - name: Upload Android APK
+        if: steps.gradle_build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: ALMAJD-debug-apk
           path: android/app/build/outputs/apk/debug/app-debug.apk
 
       - name: Upload Android emulator screenshot
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ALMAJD-android-emulator-screenshot
           path: artifacts/ALMAJD-android-emulator-screenshot.png
+
+      - name: Fail with Android log tail
+        if: steps.sdk_packages.outcome != 'success' || steps.npm_ci.outcome != 'success' || steps.prisma_generate.outcome != 'success' || steps.capacitor_sync.outcome != 'success' || steps.gradle_build.outcome != 'success'
+        run: |
+          echo "## Android build failed" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- SDK packages: ${{ steps.sdk_packages.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- npm ci: ${{ steps.npm_ci.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Prisma generate: ${{ steps.prisma_generate.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Capacitor sync: ${{ steps.capacitor_sync.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "- Gradle build: ${{ steps.gradle_build.outcome }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo '```text' >> "$GITHUB_STEP_SUMMARY"
+          tail -n 120 ci-android-log.txt >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo 'ANDROID_LOG<<EOF'
+            tail -n 60 ci-android-log.txt
+            echo 'EOF'
+          } >> "$GITHUB_ENV"
+          exit 1
+
+      - name: Publish Android failure annotation
+        if: failure() && env.ANDROID_LOG != ''
+        run: |
+          echo "::error title=Android build failed::${ANDROID_LOG//$'\n'/'%0A'}"
