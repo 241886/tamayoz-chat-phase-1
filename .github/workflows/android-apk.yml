@@ -44,7 +44,7 @@ jobs:
       - name: Install Android SDK packages
         run: |
           set -o pipefail
-          yes | sdkmanager --licenses
+          yes | sdkmanager --licenses 2>&1 | tee -a ci-log.txt || true
           sdkmanager "platforms;android-36" "build-tools;36.0.0" 2>&1 | tee -a ci-log.txt
 
       - name: Install dependencies
