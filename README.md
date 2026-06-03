@@ -1,8 +1,8 @@
-# Nexus
+# ALMAJD
 
 Connect. Collaborate. Create.
 
-Nexus is a modern full-stack real-time workspace chat system with guest access, private and group conversations, Socket.IO messaging, file sharing, SQLite local persistence, Prisma ORM, a responsive Next.js interface, PWA metadata, and a dark-mode-first professional UI.
+ALMAJD is a modern full-stack real-time workspace chat system with guest access, private and group conversations, Socket.IO messaging, file sharing, SQLite local persistence, Prisma ORM, a responsive Next.js interface, installable PWA support, and a dark-mode-first professional UI.
 
 ## Tech Stack
 
@@ -36,6 +36,74 @@ nexus/
   .env.example
   render.yaml
 ```
+
+## App Install / PWA
+
+ALMAJD can run as an installable web app on desktop and mobile browsers. The frontend includes:
+
+- `/manifest.json` app metadata
+- `/sw.js` service worker
+- `/offline.html` offline fallback
+- Sidebar install button when the browser supports installation
+
+For a local production-style test:
+
+```cmd
+npm.cmd run build
+npm.cmd run start --workspace frontend
+```
+
+Then open `http://localhost:3000/chat` in Chrome or Edge and use the browser install button, or the in-app `Install ALMAJD` button when it appears.
+
+## Native Mobile App
+
+ALMAJD also includes a Capacitor Android wrapper. The native app uses the static exported Next.js frontend and connects to the deployed Render backend by default:
+
+- API: `https://tamayoz-chat-api.onrender.com`
+- Socket.IO: `https://tamayoz-chat-api.onrender.com`
+- Android app id: `com.almajd.chat`
+- Android app name: `ALMAJD`
+
+Build and sync the Android project:
+
+```cmd
+npm.cmd run mobile:build
+```
+
+Open the project in Android Studio:
+
+```cmd
+npm.cmd run mobile:open:android
+```
+
+Run on an emulator or connected Android phone:
+
+```cmd
+npm.cmd run mobile:run:android
+```
+
+Build a debug APK from the Android folder:
+
+```cmd
+cd android
+gradlew.bat assembleDebug
+```
+
+The debug APK will be created at:
+
+```txt
+android\app\build\outputs\apk\debug\app-debug.apk
+```
+
+Android builds require Android Studio and a configured Java JDK. If `gradlew.bat assembleDebug` says `JAVA_HOME is not set`, install Android Studio or JDK 17+, then set `JAVA_HOME` to the JDK path and reopen the terminal.
+
+You can also build the APK from GitHub without installing Java locally:
+
+1. Push the project to GitHub.
+2. Open the repository on GitHub.
+3. Go to `Actions`.
+4. Run `Build Android APK`.
+5. Download the `ALMAJD-debug-apk` artifact.
 
 ## Setup
 
@@ -492,7 +560,7 @@ Server to client:
 - `typing:update`
 - `conversation:upsert`
 
-## Current Nexus Features
+## Current ALMAJD Features
 
 - Register, login, logout
 - JWT authentication

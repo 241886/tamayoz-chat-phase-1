@@ -38,7 +38,7 @@ app.use(
 );
 
 app.get("/health", (_req, res) => {
-  res.json({ status: "ok", service: "nexus-backend" });
+  res.json({ status: "ok", service: "almajd-backend" });
 });
 
 app.use("/api/auth", authRouter);

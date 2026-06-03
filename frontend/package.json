@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:mobile": "node ../scripts/mobile-export.mjs",
     "start": "next start",
     "lint": "eslint src --max-warnings=0"
   },

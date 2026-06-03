@@ -34,45 +34,45 @@ export function UserSearch({ token, open, onClose, onStartConversation }: UserSe
   }
 
   return (
-    <div className="absolute inset-0 z-20 bg-white dark:bg-slate-950">
-      <header className="flex h-[65px] items-center gap-3 border-b border-slate-200 px-4 dark:border-slate-800">
+    <div className="absolute inset-0 z-20 bg-[#12101a] text-white">
+      <header className="flex h-[65px] items-center gap-3 border-b border-white/[0.06] px-4">
         <button
           type="button"
           onClick={onClose}
           title="Close search"
-          className="grid h-10 w-10 place-items-center rounded-md text-slate-600 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+          className="grid h-10 w-10 place-items-center rounded-xl border border-white/[0.06] bg-white/[0.05] text-white/70 transition hover:bg-white/[0.08] hover:text-white"
         >
           <X size={20} />
         </button>
-        <form onSubmit={search} className="flex min-w-0 flex-1 items-center gap-2 rounded-md bg-slate-100 px-3 dark:bg-slate-900">
-          <Search size={18} className="text-slate-400" />
+        <form onSubmit={search} className="glass-input flex min-w-0 flex-1 items-center gap-2 rounded-xl px-3">
+          <Search size={18} className="text-white/40" />
           <input
             autoFocus
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Name or email"
-            className="h-11 min-w-0 flex-1 bg-transparent text-sm outline-none"
+            className="h-11 min-w-0 flex-1 bg-transparent text-sm outline-none placeholder:text-white/35"
           />
         </form>
       </header>
 
       <div className="h-[calc(100%-65px)] overflow-y-auto">
         {loading ? (
-          <div className="px-6 py-8 text-sm text-slate-500">Searching...</div>
+          <div className="px-6 py-8 text-sm text-white/40">Searching...</div>
         ) : users.length === 0 ? (
-          <div className="px-6 py-8 text-sm text-slate-500">Search for a user to begin.</div>
+          <div className="px-6 py-8 text-sm text-white/40">Search for a user to begin.</div>
         ) : (
           users.map((user) => (
             <button
               key={user.id}
               type="button"
               onClick={() => onStartConversation(user)}
-              className="flex w-full items-center gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-slate-50 dark:border-slate-900 dark:hover:bg-slate-900"
+              className="flex w-full items-center gap-3 border-b border-white/[0.06] px-4 py-3 text-left transition hover:bg-white/[0.045]"
             >
               <Avatar user={user} />
               <div className="min-w-0">
-                <p className="truncate text-sm font-semibold">{user.name}</p>
-                <p className="truncate text-xs text-slate-500 dark:text-slate-400">{user.email}</p>
+                <p className="truncate text-sm font-semibold text-white">{user.name}</p>
+                <p className="truncate text-xs text-white/38">{user.email}</p>
               </div>
             </button>
           ))

@@ -19,13 +19,14 @@ export function Avatar({ user, size = "md" }: AvatarProps) {
       .slice(0, 2)
       .map((part) => part[0])
       .join("")
-      .toUpperCase() || "TC";
+      .toUpperCase() || "NX";
 
   return (
     <div className="relative shrink-0">
       <div
         className={clsx(
           "grid place-items-center overflow-hidden rounded-full bg-gradient-to-br from-brand-500 to-emerald-500 font-semibold text-white",
+          "shadow-[0_0_22px_rgba(200,122,255,0.2)] ring-1 ring-white/10",
           sizes[size]
         )}
       >
@@ -39,8 +40,8 @@ export function Avatar({ user, size = "md" }: AvatarProps) {
       {user?.status ? (
         <span
           className={clsx(
-            "absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-white dark:border-slate-900",
-            user.status === "ONLINE" ? "bg-emerald-500" : "bg-slate-400"
+            "absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-[#12101a]",
+            user.status === "ONLINE" ? "online-glow" : "bg-white/25"
           )}
         />
       ) : null}

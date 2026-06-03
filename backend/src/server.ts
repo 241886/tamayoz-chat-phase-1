@@ -9,5 +9,5 @@ const io = registerSocketServer(httpServer);
 app.set("io", io);
 
 httpServer.listen(env.port, "0.0.0.0", () => {
-  console.log(`Nexus backend listening on http://localhost:${env.port}`);
+  console.log(`ALMAJD backend listening on http://localhost:${env.port}`);
 });

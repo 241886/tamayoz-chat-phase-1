@@ -6,6 +6,10 @@ coverage
 *.log
 *.zip
 .tools
+frontend/out
+android/.gradle
+android/app/build
+android/build
 backend/prisma/dev.db
 backend/prisma/dev.db-journal
 backend/uploads

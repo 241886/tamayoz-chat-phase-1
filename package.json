@@ -2,7 +2,7 @@
   "name": "nexus",
   "private": true,
   "version": "1.0.0",
-  "description": "Nexus: Connect. Collaborate. Create.",
+  "description": "ALMAJD: Connect. Collaborate. Create.",
   "workspaces": [
     "backend",
     "frontend"
@@ -12,12 +12,16 @@
     "dev:backend": "npm run dev --workspace backend",
     "dev:frontend": "npm run dev --workspace frontend",
     "build": "npm run build --workspace backend && npm run build --workspace frontend",
+    "mobile:build": "npm run build:mobile --workspace frontend && npx cap sync android",
+    "mobile:open:android": "npx cap open android",
+    "mobile:run:android": "npx cap run android",
     "test:auth": "npm run test:auth --workspace backend",
     "test:chat": "npm run test:chat --workspace backend",
     "test": "npm run test:auth && npm run test:chat",
     "lint": "npm run lint --workspace frontend"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.4.0",
     "concurrently": "^9.1.2"
   },
   "overrides": {
@@ -25,5 +29,9 @@
     "next": {
       "postcss": "^8.5.10"
     }
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/core": "^8.4.0"
   }
 }

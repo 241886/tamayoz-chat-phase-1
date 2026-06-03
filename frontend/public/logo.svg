@@ -1,9 +1,17 @@
-<svg width="240" height="80" viewBox="0 0 240 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="4" y="8" width="64" height="64" rx="16" fill="#0F172A"/>
-  <rect x="14" y="18" width="44" height="44" rx="10" fill="#5865F2"/>
-  <path d="M25 53V27h7v26h-7Z" fill="white"/>
-  <path d="M43 53V27h7v26h-7Z" fill="white"/>
-  <path d="M32 27h7l11 26h-7L32 27Z" fill="white"/>
-  <text x="84" y="38" fill="#0F172A" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Nexus</text>
-  <text x="84" y="58" fill="#475569" font-family="Inter, Arial, sans-serif" font-size="12" font-weight="500">Connect. Collaborate. Create.</text>
+<svg width="220" height="80" viewBox="0 0 220 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="4" y="8" width="64" height="64" rx="18" fill="#12101a"/>
+  <rect x="14" y="18" width="44" height="44" rx="12" fill="url(#paint0_linear)"/>
+  <path d="M24 54V26H32L46 43V26H54V54H46L32 37V54H24Z" fill="white"/>
+  <text x="84" y="38" fill="url(#paint1_linear)" font-family="Syne, Arial, sans-serif" font-size="26" font-weight="800">ALMAJD</text>
+  <text x="86" y="58" fill="rgba(255,255,255,0.52)" font-family="DM Sans, Arial, sans-serif" font-size="10" font-weight="600">Connect. Collaborate. Create.</text>
+  <defs>
+    <linearGradient id="paint0_linear" x1="14" y1="18" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c87aff"/>
+      <stop offset="1" stop-color="#ff6eb4"/>
+    </linearGradient>
+    <linearGradient id="paint1_linear" x1="84" y1="18" x2="168" y2="50" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c87aff"/>
+      <stop offset="1" stop-color="#ff6eb4"/>
+    </linearGradient>
+  </defs>
 </svg>

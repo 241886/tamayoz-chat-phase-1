@@ -110,10 +110,12 @@ export function ChatWindow({
 
   if (!conversation && !group) {
     return (
-      <section className="hidden h-full flex-col items-center justify-center bg-mist px-6 text-center dark:bg-nexus-dark md:flex">
-        <NexusLogo size="lg" />
-        <h2 className="mt-6 text-2xl font-semibold">A focused workspace for every conversation</h2>
-        <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500 dark:text-slate-400">
+      <section className="app-cinematic hidden h-full flex-col items-center justify-center overflow-hidden px-6 text-center md:flex">
+        <div className="glass-panel rounded-[2rem] p-8 shadow-nexus">
+          <NexusLogo size="lg" />
+        </div>
+        <h2 className="font-display mt-8 text-2xl font-bold text-white">A focused workspace for every conversation</h2>
+        <p className="mt-2 max-w-sm text-sm leading-6 text-white/45">
           Select a chat or create a group to connect, collaborate, and create with your team.
         </p>
       </section>
@@ -245,7 +247,7 @@ export function ChatWindow({
 
     if (isImage) {
       return (
-        <a href={href} target="_blank" rel="noreferrer" className="mt-2 block overflow-hidden rounded-md">
+        <a href={href} target="_blank" rel="noreferrer" className="mt-2 block overflow-hidden rounded-xl border border-white/[0.06]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={href} alt={attachment.originalName} className="max-h-72 w-full object-cover" />
         </a>
@@ -256,14 +258,14 @@ export function ChatWindow({
       return (
         <div
           className={clsx(
-            "mt-2 rounded-md border p-3",
-            mine ? "border-white/20 bg-white/10" : "border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900"
+            "mt-2 rounded-xl border p-3",
+            mine ? "border-brand-purple/25 bg-white/10" : "border-white/[0.06] bg-white/[0.07]"
           )}
         >
           <div className="mb-2 flex items-center justify-between gap-3">
             <div className="min-w-0">
               <p className="truncate font-medium">{attachment.originalName}</p>
-              <p className={clsx("text-xs", mine ? "text-cyan-50/75" : "text-slate-500 dark:text-slate-400")}>
+              <p className={clsx("text-xs", mine ? "text-white/70" : "text-white/42")}>
                 Voice message - {formatBytes(attachment.size)}
               </p>
             </div>
@@ -272,8 +274,8 @@ export function ChatWindow({
               download={attachment.originalName}
               title="Download voice message"
               className={clsx(
-                "grid h-9 w-9 shrink-0 place-items-center rounded-md transition",
-                mine ? "bg-white/15 text-white hover:bg-white/25" : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-800"
+                "grid h-9 w-9 shrink-0 place-items-center rounded-xl transition",
+                mine ? "bg-white/15 text-white hover:bg-white/25" : "bg-white/[0.08] text-white/75 hover:bg-white/[0.12]"
               )}
             >
               <Download size={17} />
@@ -286,7 +288,7 @@ export function ChatWindow({
 
     if (attachment.mimeType.startsWith("video/")) {
       return (
-        <div className="mt-2 overflow-hidden rounded-md">
+        <div className="mt-2 overflow-hidden rounded-xl border border-white/[0.06]">
           <video controls src={href} className="max-h-80 w-full bg-black" />
         </div>
       );
@@ -295,16 +297,16 @@ export function ChatWindow({
     return (
       <div
         className={clsx(
-          "mt-2 flex items-center gap-3 rounded-md border p-3",
-          mine ? "border-white/20 bg-white/10" : "border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900"
+          "mt-2 flex items-center gap-3 rounded-xl border p-3",
+          mine ? "border-brand-purple/25 bg-white/10" : "border-white/[0.06] bg-white/[0.07]"
         )}
       >
-        <div className={clsx("grid h-10 w-10 shrink-0 place-items-center rounded-md", mine ? "bg-white/15" : "bg-brand-50 text-brand-700 dark:bg-brand-500/15 dark:text-brand-100")}>
+        <div className="accent-gradient grid h-10 w-10 shrink-0 place-items-center rounded-xl text-white shadow-[0_0_22px_rgba(200,122,255,0.24)]">
           <FileText size={20} />
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate font-medium">{attachment.originalName}</p>
-          <p className={clsx("text-xs", mine ? "text-cyan-50/75" : "text-slate-500 dark:text-slate-400")}>
+          <p className={clsx("text-xs", mine ? "text-white/70" : "text-white/42")}>
             {formatBytes(attachment.size)}
           </p>
         </div>
@@ -313,8 +315,8 @@ export function ChatWindow({
           download={attachment.originalName}
           title="Download file"
           className={clsx(
-            "grid h-9 w-9 shrink-0 place-items-center rounded-md transition",
-            mine ? "bg-white/15 text-white hover:bg-white/25" : "bg-white text-slate-700 hover:bg-slate-100 dark:bg-slate-950 dark:text-slate-100 dark:hover:bg-slate-800"
+            "grid h-9 w-9 shrink-0 place-items-center rounded-xl transition",
+            mine ? "bg-white/15 text-white hover:bg-white/25" : "bg-white/[0.08] text-white/75 hover:bg-white/[0.12]"
           )}
         >
           <Download size={17} />
@@ -324,33 +326,41 @@ export function ChatWindow({
   }
 
   return (
-    <section className="flex h-full min-h-0 flex-col bg-mist dark:bg-nexus-dark">
-      <header className="flex h-[65px] items-center gap-3 border-b border-slate-200 bg-white px-3 dark:border-slate-800 dark:bg-slate-950 sm:px-4">
+    <section className="relative flex h-full min-h-0 flex-col overflow-hidden bg-[#0d0d12] text-white">
+      <header className="flex h-[65px] items-center gap-3 border-b border-white/[0.06] bg-[#12101a]/88 px-3 backdrop-blur-xl sm:px-4">
         <button
           type="button"
           onClick={onBack}
           title="Back to conversations"
-          className="grid h-10 w-10 place-items-center rounded-md text-slate-600 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900 md:hidden"
+          className="grid h-10 w-10 place-items-center rounded-xl border border-white/[0.06] bg-white/[0.05] text-white/70 transition hover:bg-white/[0.08] hover:text-white md:hidden"
         >
           <ArrowLeft size={20} />
         </button>
         {group ? (
-          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-amber-500 to-brand-600 font-semibold text-white">
+          <div className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br from-amber-400 to-brand-purple font-display font-bold text-white shadow-[0_0_26px_rgba(200,122,255,0.3)]">
             {group.name.slice(0, 2).toUpperCase()}
           </div>
         ) : (
           <Avatar user={other} />
         )}
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold">{title}</p>
-          <p className="truncate text-xs text-slate-500 dark:text-slate-400">{subtitle}</p>
+          <p className="font-display truncate text-sm font-bold text-white">{title}</p>
+          <div className="mt-0.5 flex min-w-0 items-center gap-2">
+            <p className="truncate text-xs text-white/42">{subtitle}</p>
+            {group ? (
+              <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-cyan">
+                <span className="online-glow h-1.5 w-1.5 rounded-full" />
+                {group.members.filter((member) => member.user.status === "ONLINE").length} online
+              </span>
+            ) : null}
+          </div>
         </div>
         {group && canManageGroup ? (
           <button
             type="button"
             onClick={onAddMembers}
             title="Add members"
-            className="flex h-10 shrink-0 items-center gap-2 rounded-md bg-brand-600 px-3 text-sm font-semibold text-white transition hover:bg-brand-700"
+            className="accent-gradient flex h-10 shrink-0 items-center gap-2 rounded-xl px-3 text-sm font-bold text-white shadow-[0_0_28px_rgba(200,122,255,0.24)] transition hover:opacity-95"
           >
             <UserPlus size={17} />
             <span className="hidden sm:inline">Add Members</span>
@@ -361,7 +371,7 @@ export function ChatWindow({
             type="button"
             onClick={onOpenGroupInfo}
             title="Group info"
-            className="flex h-10 shrink-0 items-center gap-2 rounded-md border border-slate-200 bg-white px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="flex h-10 shrink-0 items-center gap-2 rounded-xl border border-white/[0.06] bg-white/[0.05] px-3 text-sm font-semibold text-white/75 transition hover:bg-white/[0.08] hover:text-white"
           >
             <Users size={17} />
             <span className="hidden sm:inline">Group Info</span>
@@ -369,7 +379,7 @@ export function ChatWindow({
         ) : null}
       </header>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-3 py-4 sm:px-6">
+      <div className="relative min-h-0 flex-1 overflow-y-auto px-3 py-4 before:pointer-events-none before:absolute before:inset-0 before:bg-[radial-gradient(circle_at_50%_0%,rgba(200,122,255,0.09),transparent_24rem)] sm:px-6">
         <div className="mx-auto flex max-w-3xl flex-col gap-2">
           {messages.map((message) => {
             const mine = message.senderId === currentUser.id;
@@ -377,33 +387,33 @@ export function ChatWindow({
               <div key={message.id} className={clsx("flex", mine ? "justify-end" : "justify-start")}>
                 <div
                   className={clsx(
-                    "group relative max-w-[82%] rounded-lg px-3 py-2 text-sm shadow-sm sm:max-w-[68%]",
+                    "group relative max-w-[82%] rounded-2xl border px-3 py-2 text-sm shadow-sm backdrop-blur sm:max-w-[68%]",
                     mine
-                      ? "rounded-br-sm bg-brand-600 text-white"
-                      : "rounded-bl-sm bg-white text-ink dark:bg-slate-950 dark:text-slate-100"
+                      ? "rounded-br-md border-brand-purple/25 bg-[linear-gradient(135deg,rgba(140,40,220,0.7),rgba(200,50,150,0.6))] text-white shadow-[0_12px_36px_rgba(200,50,150,0.18)]"
+                      : "rounded-bl-md border-white/[0.06] bg-white/[0.07] text-white"
                   )}
                 >
                   {isGroup && !mine ? (
-                    <p className="mb-1 text-xs font-semibold text-brand-700 dark:text-brand-100">{message.sender.name}</p>
+                    <p className="mb-1 text-xs font-bold text-brand-purple">{message.sender.name}</p>
                   ) : null}
                   {mine && !message.isDeleted ? (
                     <details className="absolute right-1 top-1">
                       <summary
                         title="Message actions"
                         className={clsx(
-                          "grid h-7 w-7 cursor-pointer list-none place-items-center rounded-md opacity-0 transition group-hover:opacity-100 [&::-webkit-details-marker]:hidden",
-                          mine ? "bg-white/10 hover:bg-white/20" : "bg-slate-100 hover:bg-slate-200"
+                          "grid h-7 w-7 cursor-pointer list-none place-items-center rounded-lg opacity-0 transition group-hover:opacity-100 [&::-webkit-details-marker]:hidden",
+                          mine ? "bg-white/10 hover:bg-white/20" : "bg-white/[0.08] hover:bg-white/[0.12]"
                         )}
                       >
                         <MoreVertical size={15} />
                       </summary>
-                      <div className="absolute right-0 top-8 z-10 w-32 overflow-hidden rounded-md border border-slate-200 bg-white py-1 text-ink shadow-lg dark:border-slate-700 dark:bg-slate-900 dark:text-white">
+                      <div className="absolute right-0 top-8 z-10 w-32 overflow-hidden rounded-xl border border-white/[0.06] bg-[#12101a] py-1 text-white shadow-nexus">
                         {message.body.trim() ? (
                           <button
                             type="button"
                             disabled={actionLoadingId === message.id}
                             onClick={() => onStartEdit(message)}
-                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-slate-100 disabled:opacity-50 dark:hover:bg-slate-800"
+                            className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/[0.07] disabled:opacity-50"
                           >
                             <Edit3 size={14} />
                             <span>Edit</span>
@@ -413,7 +423,7 @@ export function ChatWindow({
                           type="button"
                           disabled={actionLoadingId === message.id}
                           onClick={() => onDeleteMessage(message)}
-                          className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-600 hover:bg-rose-50 disabled:opacity-50 dark:text-rose-300 dark:hover:bg-rose-950/40"
+                          className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm text-rose-300 hover:bg-rose-500/10 disabled:opacity-50"
                         >
                           <Trash2 size={14} />
                           <span>Delete</span>
@@ -430,7 +440,7 @@ export function ChatWindow({
                   <div
                     className={clsx(
                       "mt-1 flex items-center justify-end gap-1 text-[11px]",
-                      mine ? "text-cyan-50/80" : "text-slate-400"
+                      mine ? "text-white/72" : "text-white/38"
                     )}
                   >
                     <span>{formatTime(message.createdAt)}</span>
@@ -441,33 +451,42 @@ export function ChatWindow({
               </div>
             );
           })}
+          {typingText ? (
+            <div className="flex justify-start">
+              <div className="glass-panel flex items-center gap-1.5 rounded-2xl px-4 py-3">
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+              </div>
+            </div>
+          ) : null}
         </div>
       </div>
 
-      <form onSubmit={submit} className="border-t border-slate-200 bg-white p-3 dark:border-slate-800 dark:bg-slate-950">
+      <form onSubmit={submit} className="border-t border-white/[0.06] bg-[#12101a]/88 p-3 backdrop-blur-xl">
         <div className="mx-auto max-w-3xl">
           {selectedFile ? (
-            <div className="mb-2 flex items-center gap-3 rounded-md border border-slate-200 bg-slate-50 p-2 text-sm dark:border-slate-800 dark:bg-slate-900">
-              <FileText size={18} className="shrink-0 text-brand-600" />
+            <div className="glass-panel mb-2 flex items-center gap-3 rounded-xl p-2 text-sm text-white">
+              <FileText size={18} className="shrink-0 text-brand-purple" />
               <div className="min-w-0 flex-1">
                 <p className="truncate font-medium">{selectedFile.name}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">{formatBytes(selectedFile.size)}</p>
+                <p className="text-xs text-white/42">{formatBytes(selectedFile.size)}</p>
               </div>
               {uploadProgress !== null ? (
-                <span className="text-xs font-medium text-brand-700 dark:text-brand-100">{uploadProgress}%</span>
+                <span className="text-xs font-bold text-brand-purple">{uploadProgress}%</span>
               ) : null}
               <button
                 type="button"
                 onClick={onClearFile}
                 title="Remove file"
-                className="grid h-8 w-8 place-items-center rounded-md text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800"
+                className="grid h-8 w-8 place-items-center rounded-lg text-white/55 hover:bg-white/[0.08] hover:text-white"
               >
                 <X size={16} />
               </button>
             </div>
           ) : null}
           {isRecording ? (
-            <div className="mb-2 flex items-center gap-3 rounded-md border border-rose-200 bg-rose-50 p-2 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-200">
+            <div className="mb-2 flex items-center gap-3 rounded-xl border border-rose-400/20 bg-rose-500/10 p-2 text-sm text-rose-100">
               <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-rose-500" />
               <span className="font-medium">Recording {formatRecordingTime(recordingSeconds)}</span>
               <div className="flex-1" />
@@ -475,7 +494,7 @@ export function ChatWindow({
                 type="button"
                 onClick={() => stopVoiceRecording(false)}
                 title="Cancel recording"
-                className="grid h-8 w-8 place-items-center rounded-md hover:bg-rose-100 dark:hover:bg-rose-900/40"
+                className="grid h-8 w-8 place-items-center rounded-lg hover:bg-rose-500/15"
               >
                 <Trash2 size={16} />
               </button>
@@ -483,34 +502,34 @@ export function ChatWindow({
                 type="button"
                 onClick={() => stopVoiceRecording(true)}
                 title="Stop recording"
-                className="grid h-8 w-8 place-items-center rounded-md bg-rose-600 text-white hover:bg-rose-700"
+                className="grid h-8 w-8 place-items-center rounded-lg bg-rose-500 text-white hover:bg-rose-400"
               >
                 <Square size={14} />
               </button>
             </div>
           ) : null}
           {fileError ? (
-            <div className="mb-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-200">
+            <div className="mb-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
               {fileError}
             </div>
           ) : null}
           {actionError ? (
-            <div className="mb-2 rounded-md border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-200">
+            <div className="mb-2 rounded-xl border border-rose-400/20 bg-rose-500/10 px-3 py-2 text-sm text-rose-100">
               {actionError}
             </div>
           ) : null}
           {editingMessage ? (
-            <div className="mb-2 flex items-center gap-3 rounded-md border border-brand-100 bg-brand-50 p-2 text-sm dark:border-brand-500/30 dark:bg-brand-500/10">
-              <Edit3 size={17} className="shrink-0 text-brand-700 dark:text-brand-100" />
+            <div className="mb-2 flex items-center gap-3 rounded-xl border border-brand-purple/25 bg-brand-purple/10 p-2 text-sm">
+              <Edit3 size={17} className="shrink-0 text-brand-purple" />
               <div className="min-w-0 flex-1">
-                <p className="font-medium text-brand-800 dark:text-brand-100">Editing message</p>
-                <p className="truncate text-xs text-slate-500 dark:text-slate-400">{editingMessage.body}</p>
+                <p className="font-medium text-white">Editing message</p>
+                <p className="truncate text-xs text-white/45">{editingMessage.body}</p>
               </div>
               <button
                 type="button"
                 onClick={onCancelEdit}
                 title="Cancel edit"
-                className="grid h-8 w-8 place-items-center rounded-md text-slate-600 hover:bg-brand-100 dark:text-slate-200 dark:hover:bg-brand-500/20"
+                className="grid h-8 w-8 place-items-center rounded-lg text-white/60 hover:bg-white/[0.08] hover:text-white"
               >
                 <X size={16} />
               </button>
@@ -528,7 +547,7 @@ export function ChatWindow({
             title="Attach file"
             onClick={() => fileInputRef.current?.click()}
             disabled={Boolean(editingMessage)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/[0.06] bg-white/[0.06] text-white/70 transition hover:bg-white/[0.1] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Paperclip size={18} />
           </button>
@@ -537,7 +556,7 @@ export function ChatWindow({
             title="Record voice message"
             onClick={startVoiceRecording}
             disabled={sending || isRecording || Boolean(editingMessage)}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:bg-slate-800"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/[0.06] bg-white/[0.06] text-white/70 transition hover:bg-white/[0.1] hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Mic size={18} />
           </button>
@@ -546,7 +565,7 @@ export function ChatWindow({
             onChange={(event) => onComposeChange(event.target.value)}
             placeholder={editingMessage ? "Edit message" : "Message"}
             rows={1}
-            className="max-h-32 min-h-11 flex-1 resize-none rounded-md border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm outline-none transition focus:border-brand-500 dark:border-slate-700 dark:bg-slate-900"
+            className="glass-input max-h-32 min-h-11 flex-1 resize-none rounded-xl px-3 py-2.5 text-sm placeholder:text-white/35"
             onKeyDown={(event) => {
               if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
@@ -558,7 +577,7 @@ export function ChatWindow({
             type="submit"
             title="Send message"
             disabled={(editingMessage ? !compose.trim() : !compose.trim() && !selectedFile) || sending}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-brand-600 text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="accent-gradient grid h-11 w-11 shrink-0 place-items-center rounded-xl text-white shadow-[0_0_28px_rgba(200,122,255,0.34)] transition hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Send size={18} />
           </button>

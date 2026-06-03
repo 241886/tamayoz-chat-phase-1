@@ -1,13 +1,16 @@
 {
-  "name": "Nexus",
-  "short_name": "Nexus",
+  "name": "ALMAJD",
+  "short_name": "ALMAJD",
   "description": "Connect. Collaborate. Create.",
+  "id": "/chat",
   "start_url": "/chat",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#0F172A",
-  "theme_color": "#5865F2",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "background_color": "#0d0d12",
+  "theme_color": "#c87aff",
   "orientation": "portrait-primary",
+  "categories": ["productivity", "social", "business"],
   "icons": [
     {
       "src": "/icon.svg",
