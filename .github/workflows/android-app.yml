@@ -1,0 +1,99 @@
+name: Build Android App
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - master
+
+jobs:
+  build-android:
+    name: Build And Run Android App
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      DATABASE_URL: file:./dev.db
+      JWT_SECRET: github-actions-android-build-secret
+      JWT_EXPIRES_IN: 7d
+      PORT: 4000
+      CLIENT_URL: http://localhost:3000
+      UPLOAD_DIR: ./uploads
+      NEXT_PUBLIC_API_URL: https://tamayoz-chat-api.onrender.com
+      NEXT_PUBLIC_SOCKET_URL: https://tamayoz-chat-api.onrender.com
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android SDK packages
+        run: |
+          set -o pipefail
+          yes | sdkmanager --licenses 2>&1 | tee -a ci-android-log.txt || true
+          sdkmanager "platforms;android-35" "build-tools;35.0.0" 2>&1 | tee -a ci-android-log.txt
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts 2>&1 | tee -a ci-android-log.txt
+
+      - name: Generate Prisma client
+        run: npm run prisma:generate --workspace backend 2>&1 | tee -a ci-android-log.txt
+
+      - name: Build and sync Android app
+        run: |
+          set -o pipefail
+          npm run mobile:build:android 2>&1 | tee -a ci-android-log.txt
+
+      - name: Build debug APK
+        run: |
+          set -o pipefail
+          chmod +x android/gradlew
+          cd android
+          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee -a ../ci-android-log.txt
+
+      - name: Run Android emulator smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          script: |
+            mkdir -p artifacts
+            adb install -r android/app/build/outputs/apk/debug/app-debug.apk
+            adb shell monkey -p com.almajd.chat -c android.intent.category.LAUNCHER 1
+            sleep 12
+            adb exec-out screencap -p > artifacts/ALMAJD-android-emulator-screenshot.png
+
+      - name: Upload Android CI log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-android-ci-log
+          path: ci-android-log.txt
+
+      - name: Upload Android APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-debug-apk
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+
+      - name: Upload Android emulator screenshot
+        uses: actions/upload-artifact@v4
+        with:
+          name: ALMAJD-android-emulator-screenshot
+          path: artifacts/ALMAJD-android-emulator-screenshot.png

@@ -55,25 +55,44 @@ npm.cmd run start --workspace frontend
 
 Then open `http://localhost:3000/chat` in Chrome or Edge and use the browser install button, or the in-app `Install ALMAJD` button when it appears.
 
-## Native iOS App
+## Native Mobile Apps
 
-ALMAJD includes a Capacitor iOS wrapper. The native app uses the static exported Next.js frontend and connects to the deployed Render backend by default:
+ALMAJD includes Capacitor wrappers for Android and iOS. The native apps use the static exported Next.js frontend and connect to the deployed Render backend by default:
 
 - API: `https://tamayoz-chat-api.onrender.com`
 - Socket.IO: `https://tamayoz-chat-api.onrender.com`
+- Android app id: `com.almajd.chat`
 - iOS bundle id: `com.almajd.chat`
 - App name: `ALMAJD`
 
-Build and sync the iOS project:
+Build and sync both native projects:
 
 ```cmd
 npm.cmd run mobile:build
 ```
 
-Or run the explicit iOS sync command:
+Build and sync only Android:
+
+```cmd
+npm.cmd run mobile:build:android
+```
+
+Build and sync only iOS:
 
 ```cmd
 npm.cmd run mobile:sync:ios
+```
+
+Open Android in Android Studio:
+
+```cmd
+npm.cmd run mobile:open:android
+```
+
+Run Android on an emulator or connected phone:
+
+```cmd
+npm.cmd run mobile:run:android
 ```
 
 Open the iOS project in Xcode:
@@ -88,15 +107,15 @@ Run on an iOS simulator or device:
 npm.cmd run mobile:run:ios
 ```
 
-Note: iOS building/running requires macOS with Xcode. Windows can generate and sync the iOS project, but it cannot compile the final iOS app locally.
+Note: Android local builds require Android Studio/JDK. iOS building/running requires macOS with Xcode. Windows can generate and sync the iOS project, but it cannot compile the final iOS app locally.
 
-You can also build an iOS simulator artifact from GitHub:
+You can also build/test mobile artifacts from GitHub:
 
 1. Push the project to GitHub.
 2. Open the repository on GitHub.
 3. Go to `Actions`.
-4. Run `Build iOS App`.
-5. Download `ALMAJD-ios-simulator-app` for iOS simulator testing.
+4. Run `Build Android App` for Android APK + emulator screenshot.
+5. Run `Build iOS App` for iOS simulator app + screenshot.
 
 For a real iPhone/TestFlight/App Store build, configure Apple Developer code signing in Xcode or GitHub Actions.
 
