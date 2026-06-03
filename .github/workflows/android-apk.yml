@@ -10,6 +10,16 @@ on:
 jobs:
   build-android:
     runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+      DATABASE_URL: file:./dev.db
+      JWT_SECRET: github-actions-mobile-build-secret
+      JWT_EXPIRES_IN: 7d
+      PORT: 4000
+      CLIENT_URL: http://localhost:3000
+      UPLOAD_DIR: ./uploads
+      NEXT_PUBLIC_API_URL: https://tamayoz-chat-api.onrender.com
+      NEXT_PUBLIC_SOCKET_URL: https://tamayoz-chat-api.onrender.com
 
     steps:
       - name: Checkout
@@ -35,9 +45,6 @@ jobs:
 
       - name: Build and sync mobile app
         run: npm run mobile:build
-        env:
-          NEXT_PUBLIC_API_URL: https://tamayoz-chat-api.onrender.com
-          NEXT_PUBLIC_SOCKET_URL: https://tamayoz-chat-api.onrender.com
 
       - name: Build debug APK
         working-directory: android
